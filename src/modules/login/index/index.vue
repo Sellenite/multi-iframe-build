@@ -3,7 +3,11 @@
 </template>
 
 <script type="text/javascript">
-export default {}
+export default {
+  created() {
+    console.log('login created')
+  }
+}
 </script>
 
 <style scoped></style>
