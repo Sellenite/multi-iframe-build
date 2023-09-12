@@ -2,7 +2,7 @@
   <div>Login</div>
 </template>
 
-<script type="text/javascript">
+<script lang="ts">
 export default {
   created() {
     console.log('login created')

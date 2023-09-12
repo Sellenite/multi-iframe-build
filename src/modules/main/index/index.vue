@@ -1,16 +1,19 @@
 <template>
-  <div>
-    <v-title title="Main"></v-title>
+  <div class="main-page">
+    <el-button>Main</el-button>
   </div>
 </template>
 
-<script type="text/javascript">
-import VTitle from '@/components/title/index.vue'
-export default {
-  components: {
-    VTitle
+<script lang="ts">
+import { defineComponent, ref } from 'vue'
+
+export default defineComponent({
+  setup() {
+    return {}
   }
-}
+})
 </script>
 
-<style scoped></style>
+<style lang="scss" scoped>
+.main-page {}
+</style>
