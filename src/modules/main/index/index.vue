@@ -1,6 +1,7 @@
 <template>
   <div class="main-page">
     <el-button>Main</el-button>
+    <img src="~@/assets/images/logo.jpg" alt="">
   </div>
 </template>
 
@@ -17,6 +18,12 @@ export default defineComponent({
     console.log(tree)
     console.log(menu)
     console.log(relateMenu)
+    console.log(process.env.NODE_ENV)
+    console.log(process.env.BASE_ENV)
+    console.log(process.env.BASE_ENV)
+    console.log(process.env.BASE_ENV)
+    console.log(process.env.BASE_ENV)
+    console.log(process.env.BASE_ENV)
     return {}
   }
 })

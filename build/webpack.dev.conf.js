@@ -1,10 +1,10 @@
-var merge = require("webpack-merge")
-var common = require("./webpack.base.conf")
-var path = require("path")
+const merge = require("webpack-merge")
+const baseConfig = require("./webpack.base.conf")
+const path = require("path")
 
-module.exports = merge(common, {
+module.exports = merge(baseConfig, {
   mode: 'development',
-  devtool: 'inline-source-map',
+  devtool: 'eval-cheap-module-source-map',
   devServer: {
     static: {
       directory: path.join(__dirname, '../dist') // webpack5使用，dev-server的启动目录
