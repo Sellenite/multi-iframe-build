@@ -4,6 +4,7 @@ const myPackage = require("../package")
 
 const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const HtmlWebpackInjectPlugin = require('./plugins/HtmlWebpackInjectPlugin.js')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 // const VueLoaderPlugin = require('vue-loader/lib/plugin') // @15.9.8 for vue2, latest for vue3
@@ -181,6 +182,7 @@ module.exports = {
       },
     ]
   },
+  externals: utils.genStatic4Externals(),
   plugins: [
     new VueLoaderPlugin(),
     new CopyWebpackPlugin({
@@ -204,6 +206,7 @@ module.exports = {
       // 用于判断打包出来的代码在哪个环境
       'process.env.BASE_ENV': JSON.stringify(process.env.BASE_ENV),
     }),
+    new HtmlWebpackInjectPlugin('static', myPackage.externals),
     ...htmlList
   ]
 }

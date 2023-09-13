@@ -15,7 +15,7 @@ function genMultiEntries() {
   var files = {}
 
   runModules = runModules ? runModules.split(",") : ""
-  glob.sync(dir).forEach(function(confPath) {
+  glob.sync(dir).forEach(function (confPath) {
     // 遍历模块配置
     var moduleName = getModuleName(confPath) // 模块名
     // 理论上可以无限加子目录，位率避免链接过长，目前限制到4级
