@@ -23,8 +23,8 @@ interface IMenuProp {
 const listToTree = (arr: ITreeItemProp[]) => {
   const rootValue = '-1'
 
-  let tree = [] // 最终返回的树
-  let childrenOf: IChildrenOf = {} // 存放的子树
+  const tree = [] // 最终返回的树
+  const childrenOf: IChildrenOf = {} // 存放的子树
   let menuId
   let parentId
 

@@ -1,4 +1,6 @@
 # 让postcss-loader知道要加哪些浏览器的前缀
 # 让babel-loader兼容目标浏览器版本
-IE 9 # 兼容IE 9
-chrome 35 # 兼容chrome 35
+> 1%
+last 2 versions
+not dead
+not ie 11

@@ -3,11 +3,12 @@
 </template>
 
 <script lang="ts">
-export default {
+import { defineComponent } from 'vue'
+export default defineComponent({
   created() {
     console.log('login created')
   }
-}
+})
 </script>
 
 <style scoped></style>

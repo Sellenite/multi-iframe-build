@@ -9,6 +9,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 // const VueLoaderPlugin = require('vue-loader/lib/plugin') // @15.9.8 for vue2, latest for vue3
 const { VueLoaderPlugin } = require('vue-loader') // @15.9.8 for vue2, latest for vue3
+const ESLintWebpackPlugin = require('eslint-webpack-plugin')
 
 const pages = utils.genMultiEntries().files
 const titles = utils.genMultiEntries().titles
@@ -50,23 +51,21 @@ module.exports = {
     type: 'filesystem', // 使用文件缓存，使再次打包的时间提升了90%
   },
   resolve: {
-    extensions: [".js", ".ts", ".vue", ".json", ".css", ".sass", ".scss", ".png", ".jpg", ".jpeg"],
+    extensions: [".js", ".jsx", ".ts", ".tsx", ".vue", ".json", ".css", ".sass", ".scss", ".png", ".jpg", ".jpeg"],
     alias: {
       "@": path.resolve(__dirname, '../src')
     }
   },
   module: {
-    // thread-loader：多线程解析loader，不支持css抽离插件MiniCssExtractPlugin.loader
     rules: [
       {
         test: /\.vue$/,
-        use: ["thread-loader", "vue-loader"]
+        use: ["vue-loader"]
       },
       {
-        test: /\.js$/,
+        test: /\.(js|jsx)$/,
         exclude: /node_modules/,
         use: [
-          "thread-loader",
           {
             loader: "babel-loader",
             options: {
@@ -75,22 +74,22 @@ module.exports = {
           }
         ]
       },
+      // 让vue支持tsx
       {
-        test: /\.ts$/, // 匹配.ts文件
+        test: /\.(ts|tsx)$/,
         exclude: /node_modules/,
         use: [
-          "thread-loader",
           {
-            loader: 'babel-loader',
+            loader: "babel-loader",
             options: {
-              presets: [
-                [
-                  "@babel/preset-typescript",
-                  {
-                    allExtensions: true, //支持所有文件扩展名(重要)
-                  },
-                ],
-              ]
+              presets: ["@babel/preset-env"]
+            }
+          },
+          {
+            loader: "ts-loader",
+            options: {
+              appendTsxSuffixTo: [/\.vue$/],
+              transpileOnly: true // 是否只做语言转换，不做类型检查，为false会导致打包很慢
             }
           }
         ]
@@ -184,6 +183,8 @@ module.exports = {
   },
   externals: utils.genStatic4Externals(),
   plugins: [
+    ...htmlList,
+    new HtmlWebpackInjectPlugin('static', myPackage.externals),
     new VueLoaderPlugin(),
     new CopyWebpackPlugin({
       patterns: [{
@@ -206,7 +207,9 @@ module.exports = {
       // 用于判断打包出来的代码在哪个环境
       'process.env.BASE_ENV': JSON.stringify(process.env.BASE_ENV),
     }),
-    new HtmlWebpackInjectPlugin('static', myPackage.externals),
-    ...htmlList
+    new ESLintWebpackPlugin({
+      context: path.resolve(__dirname, 'src'),
+      extensions: ["js", "jsx", "ts", "tsx", "vue"]
+    }),
   ]
 }
