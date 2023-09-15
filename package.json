@@ -43,6 +43,7 @@
     "style-loader": "^0.18.2",
     "ts-loader": "^9.4.4",
     "typescript": "^5.2.2",
+    "unplugin-element-plus": "^0.8.0",
     "url-loader": "^4.1.1",
     "vue-loader": "^17.2.2",
     "webpack": "^5.82.0",

@@ -207,9 +207,7 @@ module.exports = {
       // 用于判断打包出来的代码在哪个环境
       'process.env.BASE_ENV': JSON.stringify(process.env.BASE_ENV),
     }),
-    new ESLintWebpackPlugin({
-      context: path.resolve(__dirname, 'src'),
-      extensions: ["js", "jsx", "ts", "tsx", "vue"]
-    }),
+    require('unplugin-element-plus/webpack')(),
+    new ESLintWebpackPlugin(),
   ]
 }

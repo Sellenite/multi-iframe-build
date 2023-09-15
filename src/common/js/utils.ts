@@ -108,4 +108,5 @@ export {
   listToTree,
   treeToMenu,
   getRelateNodes,
+  IMenuProp,
 }
