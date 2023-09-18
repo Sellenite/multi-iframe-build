@@ -1,15 +1,21 @@
-var path = require("path")
-var glob = require("glob")
-var myPackage = require("../package")
+const path = require("path")
+const glob = require("glob")
+const myPackage = require("../package")
+const minimist = require("minimist")
+
+function getRunModules() {
+  const rawArgs = process.argv.slice(2)
+  return minimist(rawArgs)
+}
 
 function assetsPath(_path) {
-  var assetsSubDirectory = 'static'
+  const assetsSubDirectory = 'static'
   // 标准化路径，不同操作系统渲染出来的html内容不一样，例如windows的是'\/'，posix就是'/'，跨平台必须使用posix
   return path.posix.join(assetsSubDirectory, _path)
 }
 
 function genMultiEntries() {
-  var runModules = '' // 需要编译的模块
+  var runModules = getRunModules().modules // 需要编译的模块
   var dir = path.resolve(__dirname, "../src/modules/**/routes.json")
   var titles = []
   var files = {}
@@ -26,7 +32,7 @@ function genMultiEntries() {
     arr.pop()
     var pages = require(confPath)
     // 判断该模块是否需要编译
-    if (true || !runModules || runModules.indexOf(moduleName) != -1 || isInEverything(runModules, moduleName) || pages["#always"] === true) {
+    if (!runModules || runModules.indexOf(moduleName) != -1 || isInEverything(runModules, moduleName) || pages["#always"] === true) {
       for (var pageName in pages) {
         if (pageName === "#always") {
           // 过滤掉关键词选项

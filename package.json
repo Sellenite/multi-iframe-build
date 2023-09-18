@@ -4,10 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "cross-env NODE_ENV=development BASE_ENV=sit webpack-dev-server --config build/webpack.dev.conf.js",
-    "build": "cross-env NODE_ENV=production BASE_ENV=prod webpack --config build/webpack.prod.conf.js",
-    "build:sit": "cross-env NODE_ENV=production BASE_ENV=sit webpack --config build/webpack.prod.conf.js",
-    "build:uat": "cross-env NODE_ENV=production BASE_ENV=uat webpack --config build/webpack.prod.conf.js",
+    "dev": "cross-env NODE_ENV=development BASE_ENV=sit node build/dev-server.js",
+    "build": "cross-env NODE_ENV=production BASE_ENV=prod node build/build.js",
+    "build:sit": "cross-env NODE_ENV=production BASE_ENV=sit node build/build.js",
+    "build:uat": "cross-env NODE_ENV=production BASE_ENV=uat node build/build.js",
     "build:analyzer": "cross-env NODE_ENV=production BASE_ENV=prod webpack --config build/webpack.analyzer.conf.js",
     "lint": "eslint --ext .tsx,.ts,.js,.jsx,.vue ./src"
   },
@@ -37,6 +37,7 @@
     "glob": "^7.2.0",
     "html-webpack-plugin": "^5.5.1",
     "mini-css-extract-plugin": "^2.7.5",
+    "minimist": "^1.2.8",
     "postcss-loader": "^7.3.3",
     "sass": "^1.32.7",
     "sass-loader": "^12.0.0",

@@ -4,7 +4,8 @@
       <side-menu :data="menu"></side-menu>
     </div>
     <div class="layout-right">
-      <div class="layout-right-top"></div>
+      <div class="layout-right-top">
+      </div>
       <div class="layout-right-bottom"></div>
     </div>
   </div>
@@ -36,7 +37,7 @@ export default defineComponent({
   display: flex;
 
   .layout-left {
-    width: 200px;
+    flex: 0 0 200px;
     border-right: 1px solid #dcdfe6;
   }
 
@@ -44,6 +45,7 @@ export default defineComponent({
     flex: 1;
     display: flex;
     flex-direction: column;
+    width: calc(100% - 200px);
 
     .layout-right-top {
       height: 50px;

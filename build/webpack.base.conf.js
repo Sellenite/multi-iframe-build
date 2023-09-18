@@ -48,7 +48,8 @@ module.exports = {
     // clean: true, // webpack4需要配置clean-webpack-plugin来删除dist文件,webpack5内置了
   },
   cache: {
-    type: 'filesystem', // 使用文件缓存，使再次打包的时间提升了90%
+    type: 'filesystem', // 使用文件缓存，使再次打包的时间提升了90%，默认是memory
+    cacheDirectory: path.resolve(__dirname, '../.build_cache'), // 默认缓存路径是 node_modules/.cache/webpack
   },
   resolve: {
     extensions: [".js", ".jsx", ".ts", ".tsx", ".vue", ".json", ".css", ".sass", ".scss", ".png", ".jpg", ".jpeg"],

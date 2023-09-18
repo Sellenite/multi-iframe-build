@@ -36,7 +36,8 @@ module.exports = merge(baseConfig, {
       // webpack5默认会在生产模式下压缩js，但不压缩css，如果配置了css压缩，js的压缩会自动失效，需要额外写
       new CssMinimizerPlugin(),
       new TerserPlugin({
-        parallel: true, // 开启多线程压缩
+        parallel: true, // 默认true，开启多线程压缩
+        exclude: /node_modules/,
         extractComments: false, // 禁止自动生成license文件
         terserOptions: {
           compress: {
