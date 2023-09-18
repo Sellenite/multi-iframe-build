@@ -54,6 +54,7 @@ class HtmlWebpackInjectPlugin {
               const fileList = Array.isArray(this.externalsConfig[requestName].files) ? this.externalsConfig[requestName].files : this.externalsConfig[requestName].files ? [this.externalsConfig[requestName].files] : []
               for (const fileName of fileList) {
                 const filePath = path.posix.join(publicPath, this.assetsDir, fileName)
+                const error = new webpack.WebpackError('Only support .js/.css file\n' + `External import ${requestName} contains a not .js/.css file: "${filePath}"`)
                 switch (path.extname(fileName).toLowerCase()) {
                   case ".js":
                     jsList.push(filePath)
@@ -62,9 +63,8 @@ class HtmlWebpackInjectPlugin {
                     cssList.push(filePath)
                     break
                   default:
-                    const error = new webpack.WebpackError('Only support .js/.css file\n' + `External import ${requestName} contains a not .js/.css file: "${filePath}"`)
                     COMPILATION_LOGGER.error(error)
-                    compilation.errors.push(err)
+                    compilation.errors.push(error)
                     throw error
                 }
               }
