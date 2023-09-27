@@ -2,7 +2,7 @@ interface ITreeItemProp {
   menuId: string;
   menuName: string;
   parentId?: string;
-  url?: string;
+  url: string;
 }
 
 const flatTreeList: ITreeItemProp[] = [

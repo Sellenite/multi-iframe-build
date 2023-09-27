@@ -6,18 +6,22 @@ interface ITreeItemProp {
 }
 
 interface ITreeItemPropExtend extends ITreeItemProp {
-  children?: ITreeItemPropExtend[]
+  children: ITreeItemPropExtend[]
 }
 
 interface IChildrenOf {
-  [key: string]: ITreeItemProp[];
+  [key: string]: ITreeItemPropExtend[];
 }
 
 interface IMenuProp {
   id: string;
   label: string;
   url?: string;
-  children?: IMenuProp[];
+  children: IMenuProp[];
+}
+
+interface ITreeProbablyHaveChildren<T> {
+  children?: T[]
 }
 
 const listToTree = (arr: ITreeItemProp[]) => {
@@ -37,7 +41,7 @@ const listToTree = (arr: ITreeItemProp[]) => {
   for (const item of arr) {
     menuId = item.menuId
     parentId = item.parentId || rootValue
-    const _item: ITreeItemPropExtend = { ...item }
+    const _item: ITreeItemPropExtend = { ...item, children: [] }
     if (childrenOf[menuId]) {
       _item.children = childrenOf[menuId]
     }
@@ -62,12 +66,12 @@ const treeToMenu = (tree: ITreeItemPropExtend[]) => {
     const node: IMenuProp = {
       id: obj.menuId,
       label: obj.menuName,
-      url: obj.url
+      url: obj.url,
+      children: []
     }
     if (obj.children) {
-      node.children = []
       for (const item of obj.children) {
-        node.children.push(fn(item))
+        node.children && node.children.push(fn(item))
       }
     }
     return node
@@ -104,9 +108,23 @@ const getRelateNodes = (targetId: string, key: string, data: IMenuProp[]) => {
   return relateNodes
 }
 
+const traverseTree = <T extends ITreeProbablyHaveChildren<T>>(tree: Array<T>, callback: (v: T) => void) => {
+  const fn = (data: Array<T>) => {
+    for (const item of data) {
+      callback(item)
+      if (item.children && item.children.length) {
+        fn(item.children)
+      }
+    }
+  }
+
+  fn(tree)
+}
+
 export {
   listToTree,
   treeToMenu,
   getRelateNodes,
   IMenuProp,
+  traverseTree,
 }
