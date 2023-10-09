@@ -6,10 +6,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <% if(process.env.NODE_ENV == 'development') { %>
   <!-- 开发模式需要运行eval函数运行，因为webpack devtool默认配置eval-cheap-module-source-map -->
-  <meta http-equiv="content-security-policy" content="script-src 'self' 'unsafe-eval'">
+  <meta http-equiv="content-security-policy" content="script-src 'self' 'unsafe-inline' 'unsafe-eval'">
   <% } else {%>
   <!-- 生产模式禁止使用eval，动态function -->
-  <meta http-equiv="content-security-policy" content="script-src 'self'">
+  <meta http-equiv="content-security-policy" content="script-src 'self' 'unsafe-inline'">
   <% } %>
   <title>
     <%=htmlWebpackPlugin.options.title%>

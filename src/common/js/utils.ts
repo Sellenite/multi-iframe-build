@@ -1,8 +1,8 @@
 interface ITreeItemProp {
   menuId: string;
   menuName: string;
-  parentId?: string;
-  url?: string;
+  parentId: string;
+  url: string;
 }
 
 interface ITreeItemPropExtend extends ITreeItemProp {
@@ -16,7 +16,7 @@ interface IChildrenOf {
 interface IMenuProp {
   id: string;
   label: string;
-  url?: string;
+  url: string;
   children: IMenuProp[];
 }
 
@@ -121,10 +121,88 @@ const traverseTree = <T extends ITreeProbablyHaveChildren<T>>(tree: Array<T>, ca
   fn(tree)
 }
 
+// 生成路径平面结构
+const genFileModulesPath = () => {
+  const arr: string[] = []
+  const files = require.context('@/modules', true, /routes.json/)
+  files.keys().forEach(key => {
+    const prefixPath = key.replace('routes.json', '').substring(1)
+    const routes = files(key).default || files(key)
+
+    for (const routesKey in routes) {
+      if (routesKey === '#always') {
+        continue
+      }
+      arr.push(prefixPath + routesKey)
+    }
+  })
+
+  // 去除/main/index
+  const mainIndex = arr.findIndex(v => v === '/main/index')
+  if (mainIndex > -1) {
+    arr.splice(mainIndex, 1)
+  }
+
+  return arr
+}
+
+// 生成文件路径树的屏幕结构
+const genFileTreeList = (fileModulesPath: string[]) => {
+  const ret: ITreeItemProp[] = []
+
+  for (const item of fileModulesPath) {
+    const urlSplit = item.substring(1).split('/')
+    for (const [index, urlItem] of urlSplit.entries()) {
+      if (!ret.find(v => v.menuId === urlItem)) {
+        ret.push({
+          menuName: urlItem,
+          menuId: urlItem,
+          parentId: '',
+          url: ''
+        })
+      }
+
+      const current = ret.find(v => v.menuId === urlItem)
+
+      if (current) {
+        if (index === urlSplit.length - 1) {
+          // 最后位，等于他自己的url
+          current.url = item
+        }
+
+        if (index !== 0) {
+          // parentId等于他上一级
+          current.parentId = urlSplit[index - 1]
+        } else {
+          // 第一级都赋予parentId为0，用于合并成一棵树
+          current.parentId = '0'
+        }
+      }
+    }
+  }
+
+  ret.unshift({
+    menuName: 'System',
+    menuId: '0',
+    parentId: '-1',
+    url: ''
+  })
+
+  return ret
+}
+
+const genFileMenuTree = () => {
+  const fileModulesPath = genFileModulesPath()
+  const fileTreeList = genFileTreeList(fileModulesPath)
+  const tree = listToTree(fileTreeList)
+  const menu = treeToMenu(tree)
+
+  return menu
+}
+
 export {
-  listToTree,
-  treeToMenu,
-  getRelateNodes,
   IMenuProp,
+  getRelateNodes,
   traverseTree,
+  genFileMenuTree,
 }
