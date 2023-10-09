@@ -1,6 +1,6 @@
 
 <template>
-  <el-breadcrumb separator=">" style="margin-bottom: 12px;">
+  <el-breadcrumb separator=">" style="margin-bottom: 13px;">
     <el-breadcrumb-item v-for="(item, index) in data" :key="item.id">
       <template v-if="index === data.length - 1">
         <a class="is-link">{{ item.label }}</a>

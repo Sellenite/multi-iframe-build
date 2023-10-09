@@ -113,8 +113,8 @@ export default defineComponent({
       height: 80px;
       background-color: #FFF;
       box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
-      padding-left: 13px;
-      padding-top: 13px;
+      padding-left: 12px;
+      padding-top: 12px;
       position: relative;
     }
 
