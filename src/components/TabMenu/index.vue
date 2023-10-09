@@ -1,6 +1,6 @@
 
 <template>
-  <el-tabs type="card" :model-value="tabValue" @tab-click="onTabClick" @tab-remove="onTabRemove">
+  <el-tabs type="card" :model-value="defaultActive" @tab-click="onTabClick" @tab-remove="onTabRemove">
     <el-tab-pane v-for="item in data" :key="item.id" :label="item.label" :name="item.id" :closable="true">
       <template #label>
         <span>{{ item.label }}</span>
@@ -10,7 +10,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, computed } from 'vue'
+import { defineComponent, PropType } from 'vue'
 import { ElTabs, ElTabPane } from 'element-plus'
 import type { TabsPaneContext, TabPaneName } from 'element-plus'
 import { IMenuProp } from '@/common/js/utils'
@@ -21,8 +21,9 @@ export default defineComponent({
       type: Array as PropType<IMenuProp[]>,
       default: () => []
     },
-    activeTab: {
-      type: Object as PropType<IMenuProp|null>,
+    defaultActive: {
+      type: [String, Number],
+      default: 0
     }
   },
   components: {
@@ -31,14 +32,6 @@ export default defineComponent({
   },
   emits: ['tab-click', 'tab-remove'],
   setup(props, context) {
-    const tabValue = computed(() => {
-      if (props.activeTab) {
-        return props.activeTab.id
-      } else {
-        return 0
-      }
-    })
-
     const onTabClick = (tabInstance: TabsPaneContext) => {
       const id = tabInstance.paneName
 
@@ -50,7 +43,6 @@ export default defineComponent({
     }
 
     return {
-      tabValue,
       onTabClick,
       onTabRemove,
     }

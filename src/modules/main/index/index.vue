@@ -6,7 +6,7 @@
     <div class="layout-right">
       <div class="layout-right-top">
         <breadcrumb :data="breadcrumbData"></breadcrumb>
-        <tab-menu :data="tabMenuData" :active-tab="activeMenu" @tab-click="onTabClick"
+        <tab-menu :data="tabMenuData" :default-active="activeMenu?.id" @tab-click="onTabClick"
           @tab-remove="onTabRemove"></tab-menu>
       </div>
       <div class="layout-right-bottom">
