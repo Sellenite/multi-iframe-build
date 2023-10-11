@@ -8,9 +8,14 @@
         <breadcrumb :data="breadcrumbData"></breadcrumb>
         <tab-menu :data="tabMenuData" :default-active="activeMenu?.id" @tab-click="onTabClick" @tab-remove="onTabRemove"
           @tab-contextmenu="onTabContextmenu"></tab-menu>
-        <el-contextmenu ref="tabContextmenu">
-          <el-contextmenu-item @click="handleRefreshIframe">刷新</el-contextmenu-item>
-          <el-contextmenu-item @click="handleRemoveIframe">关闭</el-contextmenu-item>
+        <el-contextmenu theme="dark" ref="tabContextmenu">
+          <el-contextmenu-item :auto-hide="false">欢迎使用</el-contextmenu-item>
+          <el-contextmenu-item divider></el-contextmenu-item>
+          <el-contextmenu-submenu title="操作">
+            <el-contextmenu-item @click="handleRefreshIframe">刷新</el-contextmenu-item>
+            <el-contextmenu-item divider></el-contextmenu-item>
+            <el-contextmenu-item @click="handleRemoveIframe">关闭</el-contextmenu-item>
+          </el-contextmenu-submenu>
         </el-contextmenu>
       </div>
       <div class="layout-right-bottom">
@@ -27,7 +32,7 @@ import { IMenuProp, genFileMenuTree, getRelateNodes } from '@/common/js/utils'
 import SideMenu from '@/components/SideMenu/index.vue'
 import Breadcrumb from '@/components/Breadcrumb/index.vue'
 import TabMenu from '@/components/TabMenu/index.vue'
-import { ElContextmenu, ElContextmenuItem } from '@/components/Contextmenu/index'
+import { ElContextmenu, ElContextmenuItem, ElContextmenuSubmenu } from '@/components/Contextmenu/index'
 
 interface IPosition {
   top: number;
@@ -41,6 +46,7 @@ export default defineComponent({
     TabMenu,
     ElContextmenu,
     ElContextmenuItem,
+    ElContextmenuSubmenu,
   },
   setup() {
     const tabContextmenu = ref<{ show: (payload: IPosition) => void } | null>(null)

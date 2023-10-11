@@ -11,7 +11,11 @@ import { defineComponent, ref, computed, inject } from 'vue'
 export default defineComponent({
   props: {
     divider: Boolean,
-    disabled: Boolean
+    disabled: Boolean,
+    autoHide: {
+      type: Boolean,
+      default: true
+    },
   },
   emits: ['click', 'mouseenter', 'mouseleave'],
   setup(props, context) {
@@ -30,7 +34,7 @@ export default defineComponent({
         return
       }
       context.emit('click', event)
-      hide && hide()
+      props.autoHide && hide && hide()
     }
 
     const onMouseenter = (event: MouseEvent) => {
