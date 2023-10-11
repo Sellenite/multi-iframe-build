@@ -3,7 +3,7 @@
   <el-tabs type="card" :model-value="defaultActive" @tab-click="onTabClick" @tab-remove="onTabRemove">
     <el-tab-pane v-for="item in data" :key="item.id" :label="item.label" :name="item.id" :closable="true">
       <template #label>
-        <span>{{ item.label }}</span>
+        <span @contextmenu.prevent.stop="onContextmenu($event, item)">{{ item.label }}</span>
       </template>
     </el-tab-pane>
   </el-tabs>
@@ -30,7 +30,7 @@ export default defineComponent({
     ElTabs,
     ElTabPane,
   },
-  emits: ['tab-click', 'tab-remove'],
+  emits: ['tab-click', 'tab-remove', 'tab-contextmenu'],
   setup(props, context) {
     const onTabClick = (tabInstance: TabsPaneContext) => {
       const id = tabInstance.paneName
@@ -42,9 +42,14 @@ export default defineComponent({
       context.emit('tab-remove', id)
     }
 
+    const onContextmenu = (event: MouseEvent, item: IMenuProp) => {
+      context.emit('tab-contextmenu', event, item)
+    }
+
     return {
       onTabClick,
       onTabRemove,
+      onContextmenu,
     }
   }
 })

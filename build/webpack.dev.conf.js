@@ -10,5 +10,6 @@ module.exports = merge(baseConfig, {
       directory: path.join(__dirname, '../dist') // webpack5使用，dev-server的启动目录
     },
     port: 9000,
+    hot: false, // 关掉热更新，防止本地开发时postmessage多次订阅
   }
 })

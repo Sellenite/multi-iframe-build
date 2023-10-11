@@ -1,3 +1,4 @@
+const path = require("path")
 const merge = require("webpack-merge")
 const baseConfig = require("./webpack.base.conf")
 
@@ -12,6 +13,10 @@ module.exports = merge(baseConfig, {
   plugins: [
     new CleanWebpackPlugin()
   ],
+  cache: {
+    type: 'filesystem', // 使用文件缓存，使再次打包的时间提升了90%，默认是memory
+    cacheDirectory: path.resolve(__dirname, '../.build_cache'), // 默认缓存路径是 node_modules/.cache/webpack
+  },
   optimization: {
     splitChunks: { // 分隔代码
       cacheGroups: {
