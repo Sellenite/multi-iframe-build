@@ -1,0 +1,11 @@
+.el-menu {
+  border-right: 0;
+}
+
+.el-tabs__header {
+  margin-bottom: 0;
+}
+
+.el-tabs--card>.el-tabs__header {
+  border-bottom: 0;
+}
