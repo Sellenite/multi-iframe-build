@@ -33,6 +33,7 @@ import SideMenu from '@/components/SideMenu/index.vue'
 import Breadcrumb from '@/components/Breadcrumb/index.vue'
 import TabMenu from '@/components/TabMenu/index.vue'
 import { ElContextmenu, ElContextmenuItem, ElContextmenuSubmenu } from '@/components/Contextmenu/index'
+import pm from 'postMessage'
 
 interface IPosition {
   top: number;
@@ -126,6 +127,25 @@ export default defineComponent({
     const handleRemoveIframe = () => {
       _handleRemoveTab(currentContextMenuData.value?.id as string)
     }
+
+    pm.bind('openTab', (params) => {
+      console.log(params)
+      _handlePushTab(params.data)
+    })
+
+    pm.bind('closeTab', (params) => {
+      _handleRemoveTab(params.data.id)
+    })
+
+    pm.bind('releaseMsg', (params) => {
+      const { id, payload } = params.data
+      const iframe = document.querySelector(`#${id}`)
+      if (iframe) {
+        pm.send('subscribeMsg', iframe.contentWindow, {
+          ...payload
+        })
+      }
+    })
 
     return {
       tabContextmenu,
