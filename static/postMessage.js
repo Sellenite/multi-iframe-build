@@ -1,50 +1,75 @@
-// 简易版iframe发布订阅通信
-(function (global) {
+// iframe发布订阅通信
+!(function (context, global, fn) {
+  typeof exports === 'object' && typeof module === 'object'
+    ? (module.exports = fn(global))
+    : typeof exports === 'object'
+      ? (exports.pm = fn(global))
+      : (context.pm = fn(global))
+})(this, window, function (global) {
   // 将hub放在内存中，避免篡改
   var typeHub = {}
 
-  var postMessage = function () {
+  var postmessage = function () {
+    this.version = '1.0'
   }
 
+  // 判断是否对象
   var isObject = function (value) {
     return Object.prototype.toString.call(value) === '[object Object]'
   }
 
-  // 将订阅加个前缀
-  var prefixType = function (v) {
-    var TYPE_PREFIX = '__post_message__'
+  // 设置私有变量，表面其他有相同的type传入导致出现问题
+  var prefix = function (v) {
+    var TYPE_PREFIX = '__postmessage__'
     return TYPE_PREFIX + v
   }
 
-  global.addEventListener('message', (e) => {
-    var payload = e.data
-    if (!isObject(payload)) {
+  postmessage.prototype.bind = function (type, callback) {
+    if (typeHub[prefix(type)] || typeof callback !== 'function') {
       return
     }
-    if (typeHub[payload.type]) {
-      typeHub[payload.type]({
-        event: e,
-        data: payload.params
+
+    typeHub[prefix(type)] = callback
+  }
+
+  postmessage.prototype.unbind = function (type) {
+    if (typeHub[prefix(type)]) {
+      delete typeHub[prefix(type)]
+    }
+  }
+
+  postmessage.prototype.send = function (type, source, data = {}) {
+    // message会被结构化克隆算法序列化，这里只能传普通对象，不能带Error或Function等
+    if (!isObject(data)) {
+      // 限制统一传值格式
+      console.warn(`send ${type}: data must be an object`)
+      return
+    }
+    var params = {
+      type: prefix(type),
+      data: data
+    }
+    source.postMessage(params, '*')
+  }
+
+  global.addEventListener('message', (event) => {
+    // 需要更安全的话这里再判断下event的source，相当于发送方的window，例如判断下url是否与自己有相同的host
+    var data = event.data
+    if (typeHub[data.type]) {
+      typeHub[data.type]({
+        event: event,
+        data: data.data
       })
     }
   })
 
-  postMessage.prototype.bind = function (type, callback) {
-    if (typeHub[prefixType(type)]) {
-      return
-    }
+  return new postmessage()
+})
 
-    typeHub[prefixType(type)] = callback
-  }
 
-  postMessage.prototype.send = function (type, source, params = {}) {
-    // message会被结构化克隆算法序列化，这里只能传普通对象，不能带Error或Function等
-    var payload = {
-      type: prefixType(type),
-      params: params
-    }
-    source.postMessage(payload, '*')
-  }
 
-  global.pm = new postMessage()
-})(window)
+
+
+
+
+

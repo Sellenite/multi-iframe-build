@@ -61,10 +61,10 @@
     "vue": "^3.3.4"
   },
   "externals": {
-    "postMessage": {
+    "postmessage": {
       "var": "pm",
       "files": [
-        "postMessage.js"
+        "postmessage.js"
       ]
     }
   }

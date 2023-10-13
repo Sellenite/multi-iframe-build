@@ -35,7 +35,7 @@ export default defineComponent({
     const sendMessageToOtherPage = () => {
       sendMessage({
         id: 'menu1-2',
-        payload: {
+        data: {
           arrayValue: [1, 2, 3]
         }
       })

@@ -33,7 +33,7 @@ import SideMenu from '@/components/SideMenu/index.vue'
 import Breadcrumb from '@/components/Breadcrumb/index.vue'
 import TabMenu from '@/components/TabMenu/index.vue'
 import { ElContextmenu, ElContextmenuItem, ElContextmenuSubmenu } from '@/components/Contextmenu/index'
-import pm from 'postMessage'
+import pm from 'postmessage'
 
 interface IPosition {
   top: number;
@@ -50,7 +50,7 @@ export default defineComponent({
     ElContextmenuSubmenu,
   },
   setup() {
-    const tabContextmenu = ref<{ show: (payload: IPosition) => void } | null>(null)
+    const tabContextmenu = ref<{ show: (params: IPosition) => void } | null>(null)
     const menuTree = genFileMenuTree()
 
     const menuTreeData = ref(menuTree[0].children)
@@ -129,7 +129,6 @@ export default defineComponent({
     }
 
     pm.bind('openTab', (params) => {
-      console.log(params)
       _handlePushTab(params.data)
     })
 
@@ -138,12 +137,10 @@ export default defineComponent({
     })
 
     pm.bind('releaseMsg', (params) => {
-      const { id, payload } = params.data
-      const iframe = document.querySelector(`#${id}`)
+      const { id, data } = params.data
+      const iframe = document.querySelector(`#${id}`) as HTMLIFrameElement
       if (iframe) {
-        pm.send('subscribeMsg', iframe.contentWindow, {
-          ...payload
-        })
+        pm.send('subscribeMsg', iframe.contentWindow, data)
       }
     })
 

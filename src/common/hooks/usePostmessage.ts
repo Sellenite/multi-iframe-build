@@ -1,7 +1,7 @@
-import pm from 'postMessage'
+import pm from 'postmessage'
 
 const usePostmessage = () => {
-  const openTab = ({ id, label, url }) => {
+  const openTab = ({ id, label, url }: { id: string, label: string, url: string }) => {
     pm.send('openTab', window.top, {
       id,
       label,
@@ -9,22 +9,22 @@ const usePostmessage = () => {
     })
   }
 
-  const closeTab = ({ id }) => {
+  const closeTab = ({ id }: { id: string }) => {
     pm.send('closeTab', window.top, {
       id
     })
   }
 
-  const sendMessage = ({ id, payload }) => {
+  const sendMessage = ({ id, data }: { id: string, data: any }) => {
     pm.send('releaseMsg', window.top, {
       id,
-      payload
+      data
     })
   }
 
-  const watchMessage = (fn) => {
-    pm.bind('subscribeMsg', (payload) => {
-      fn(payload.data)
+  const watchMessage = (fn: (data: any) => void) => {
+    pm.bind('subscribeMsg', (params) => {
+      fn(params.data)
     })
   }
 

@@ -12,8 +12,8 @@ export default defineComponent({
   setup() {
     const { watchMessage } = usePostmessage()
 
-    watchMessage((params) => {
-      console.log(params)
+    watchMessage((data) => {
+      console.log(data)
     })
 
     return {}
