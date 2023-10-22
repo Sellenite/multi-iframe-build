@@ -9,7 +9,6 @@ import { defineComponent } from 'vue'
 
 export default defineComponent({
   setup() {
-    const name: string = null
   }
 })
 </script>
