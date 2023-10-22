@@ -10,6 +10,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin')
 // const VueLoaderPlugin = require('vue-loader/lib/plugin') // @15.9.8 for vue2, latest for vue3
 const { VueLoaderPlugin } = require('vue-loader') // @15.9.8 for vue2, latest for vue3
 const ESLintWebpackPlugin = require('eslint-webpack-plugin')
+const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin') // 最新版已经不支持vue文件的类型检查错误了
 
 const pages = utils.genMultiEntries().files
 const titles = utils.genMultiEntries().titles
@@ -86,7 +87,7 @@ module.exports = {
             loader: "ts-loader",
             options: {
               appendTsxSuffixTo: [/\.vue$/],
-              transpileOnly: true // 是否只做语言转换，不做类型检查，为false会导致打包很慢
+              transpileOnly: true // 是否只做语言转换，不做类型检查，为false会导致打包很慢，使用fork-ts-checker-webpack-plugin配合类型检查
             }
           }
         ]
@@ -206,5 +207,6 @@ module.exports = {
     }),
     require('unplugin-element-plus/webpack')(),
     new ESLintWebpackPlugin(),
+    // new ForkTsCheckerWebpackPlugin(),
   ]
 }
