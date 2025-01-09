@@ -67,6 +67,12 @@
       "files": [
         "postmessage.js"
       ]
+    },
+    "wps": {
+      "var": "WebOfficeSDK",
+      "files": [
+        "web-office-sdk-v1.1.19.umd.js"
+      ]
     }
   }
 }
